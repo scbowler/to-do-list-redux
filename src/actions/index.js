@@ -21,3 +21,19 @@ export function addToDoItem(item){
         payload: response
     }
 }
+
+export function getSingleItem(id){
+    // http://api.reactprototypes.com/todos/123123123123?key=someapikey
+    const response = axios.get(`${BASE_URL}/todos/${id + API_KEY}`);
+
+    return {
+        type: types.GET_SINGLE_ITEM,
+        payload: response
+    }
+}
+
+// To toggle complete of an item:
+// axios.put(`${BASE_URL}/todos/${id + API_KEY}`);
+
+// To Delete an item:
+// axios.delete(`${BASE_URL}/todos/${id + API_KEY}`);
