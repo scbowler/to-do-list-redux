@@ -5,11 +5,18 @@ import { getListData } from '../actions';
 
 class List extends Component {
     componentDidMount(){
-        this.props.getListData();
+        setTimeout(
+            this.props.getListData,
+            500
+        );
     }
 
     render(){
         const { listData } = this.props;
+
+        if(!listData.length){
+            return <h1>Loading...</h1>;
+        }
 
         const listItems = listData.map((item, index) => {
             return (
