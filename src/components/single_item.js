@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getSingleItem, toggleItemComplete } from '../actions';
+import * as actions from '../actions';
 
 class SingleItem extends Component {
     componentDidMount(){
@@ -9,14 +9,28 @@ class SingleItem extends Component {
         this.props.getSingleItem(this.props.match.params.id);
     }
 
+    componentWillUnmount(){
+        this.props.clearSingleItem();
+    }
+
     handleToggleComplete(){
         this.props.toggleItemComplete(this.props.match.params.id);
+    }
+
+    async handleDeleteItem(){
+        await this.props.deleteItem(this.props.match.params.id);
+
+        this.props.history.push('/');
     }
 
     render(){
         console.log('Single Props:', this.props);
 
         const { title, details, complete } = this.props.item;
+
+        if(!title){
+            return <p>Loading...</p>
+        }
 
         return (
             <div>
@@ -33,6 +47,13 @@ class SingleItem extends Component {
                 >
                     { complete ? 'Make Incomplete' : 'Complete Item'}
                 </button>
+                <br/>
+                <button
+                    onClick={this.handleDeleteItem.bind(this)}
+                    className="btn red darken-2"
+                >
+                    Delete Item
+                </button>
             </div>
         )
     }
@@ -44,7 +65,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps, { 
-    getSingleItem: getSingleItem,
-    toggleItemComplete: toggleItemComplete
-})(SingleItem);
+export default connect(mapStateToProps, actions)(SingleItem);
