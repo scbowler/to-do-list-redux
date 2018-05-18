@@ -5,10 +5,7 @@ import { getListData } from '../actions';
 
 class List extends Component {
     componentDidMount(){
-        setTimeout(
-            this.props.getListData,
-            500
-        );
+        this.props.getListData();
     }
 
     render(){
